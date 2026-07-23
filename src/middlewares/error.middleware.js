@@ -7,6 +7,13 @@ function errorMidlleware(err, req, res, next) {
     });
   }
 
+  if (err.name === "JsonWebTokenError") {
+    return res.status(401).json({
+      success: false,
+      message: "invalid token",
+    });
+  }
+
   if (err.statusCode) {
     return res.status(err.statusCode).json({
       success: false,

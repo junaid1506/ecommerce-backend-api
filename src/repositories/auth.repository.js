@@ -7,7 +7,7 @@ async function findUserByEmail(email) {
 }
 
 async function findUserWithPasswordByEmail(email) {
-  query = `SELECT id, name, email, password FROM users WHERE email = $1`;
+  query = `SELECT id, name, email, password , role  FROM users WHERE email = $1`;
   const result = await pool.query(query, [email]);
   return result.rows[0];
 }

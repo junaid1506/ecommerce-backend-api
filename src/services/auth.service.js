@@ -6,6 +6,7 @@ const {
 } = require("../repositories/auth.repository");
 const ConflictError = require("../utils/errors/ConflictError");
 const UnauthorizedError = require("../utils/errors/UnauthorizedError");
+const { generateAccessToken } = require("../utils/jwt");
 
 async function register(data) {
   const { name, email, password } = data;
@@ -31,16 +32,22 @@ async function login(data) {
     throw new UnauthorizedError("Invalid email or password");
   }
   const isMatch = await bcrypt.compare(password, exisitingUser.password);
-  console.log(isMatch, "isMatch");
   if (!isMatch) {
     throw new UnauthorizedError("Invalid email or password");
   }
+
+  const token = generateAccessToken({
+    id: exisitingUser.id,
+    role: exisitingUser.role,
+  });
 
   const result = {
     id: exisitingUser.id,
     name: exisitingUser.name,
     email: exisitingUser.email,
+    token: token,
   };
+
   return result;
 }
 
