@@ -1,4 +1,4 @@
-const { register } = require("../services/auth.service");
+const { register, login } = require("../services/auth.service");
 
 async function registerUser(req, res, next) {
   try {
@@ -15,5 +15,13 @@ async function registerUser(req, res, next) {
     // res.json(err.name);
   }
 }
+async function loginUser(req, res, next) {
+  try {
+    const result = await login(req.body);
+    res.send(result);
+  } catch (err) {
+    next(err);
+  }
+}
 
-module.exports = { registerUser };
+module.exports = { registerUser, loginUser };
